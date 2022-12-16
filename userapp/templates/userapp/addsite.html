@@ -1,0 +1,167 @@
+{% extends 'userapp/base.html' %}
+{% load custom_filters %}
+{% block title %}
+<title>Add new site</title>
+{% endblock title %}
+
+{% block content %}
+
+{% comment %}
+<form class="form-horizontal" method="post">{% csrf_token %}
+    <fieldset>
+        {% for field in form %}
+            {% if field.errors %}
+                <div class="control-group error">
+                    <label class="control-label">{{ field.label }}</label> 
+                    <div class="controls">{{ field }}
+                        <span class="help-inline">
+                            {% for error in  field.errors %}{{ error }}{% endfor %}
+                        </span>
+                    </div>
+                </div>
+            {% else %}
+                <div class="control-group">
+                    <label class="control-label">{{ field.label }}{%if field.label == "Links limit" %} : <span id="demo"></span>{% endif %}</label> 
+                    <div class="controls">{{ field }} 
+                        {% if field.help_text %}
+                            <p class="help-inline"><small>{{ field.help_text }}</small></p>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </fieldset>
+
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+        Add my site
+    </button>
+
+    {% endcomment %}
+
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-lg-7 mx-auto">
+                <div class="bg-white rounded-lg shadow-sm p-5">
+
+                <ul role="tablist" class="nav bg-light nav-pills rounded-pill nav-fill mb-3">
+                    <li class="nav-item">
+                        <a data-toggle="pill" href="#nav-tab-card" class="nav-link active rounded-pill">
+                            <i class="fa fa-credit-card"></i>
+                            Site Info
+                        </a>
+                    </li>
+                </ul>
+                
+            <div class="tab-content">
+                <div id="nav-tab-card" class="tab-pane fade show active">
+                    <p class="alert {% if form.errors %}alert-danger{% else %}alert-success{% endif %}">{% if form.errors %}{{form.errors.as_text}}{% else %}Fill out the details{% endif %} </p>
+                    <form  method="post">{% csrf_token %}
+
+                    <div class="form-group">
+                        <label>Alias Site Name </label>
+                        <input type="text" name="{{form.alias.label | lower}}" placeholder="Site 1" class="form-control" {%if form.alias.value %} value="{{form.alias.value}}" {% endif %}>
+                        <small id="{{form.alias.label}}Block" class="form-text text-muted">
+                            {% if form.alias.errors %}
+                                    <p style="color:red ">{{form.alias.errors.as_text }}</p>
+                            {% else %}
+                                    <p>{{form.alias.help_text}}</p>
+                            {% endif %}
+                        </small>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label>Contact Support Email </label>
+                            <input type="text" name="{{form.contact.label | lower}}" placeholder="example@domain" class="form-control" {%if form.contact.value %} value="{{form.contact.value}}" {% endif %}>
+                            <small id="{{form.contact.label}}Block" class="form-text text-muted">
+                                {% if form.contact.errors %}
+                                        <p style="color:red ">{{form.contact.errors.as_text }}</p>
+                                {% else %}
+                                        <p>{{form.contact.help_text}}</p>
+                                {% endif %}
+                            </small>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Owner Email </label>
+                            <input type="text" name="{{form.owner.label|lower}}" placeholder="example@domain" class="form-control" value = "{{user.email}}" readonly>
+                            <small id="{{form.owner.label}}Block" class="form-text text-muted">
+                                {% if form.owner.errors %}
+                                        <p style="color:red ">{{form.owner.errors.as_text }}</p>
+                                {% else %}
+                                        <p>{{form.owner.help_text}}</p>
+                                {% endif %}
+                            </small>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Domain URL </label>
+                        <input type="text" name="{{form.domain.label|lower}}" placeholder="http://example.com/" class="form-control" {%if form.domain.value %} value="{{form.domain.value}}" {% endif %}>
+                        <small id="{{form.domain.label}}Block" class="form-text text-muted">
+                            {% if form.domain.errors %}
+                                    <p style="color:red ">{{form.domain.errors.as_text }}</p>
+                            {% else %}
+                                    <p>{{form.domain.help_text}}</p>
+                            {% endif %}
+                        </small>
+                    </div>
+                    <div class="form-group">
+                        <label>Max Link Limit : <span id="demoRange"></span> </label>
+                        <input type="range" id = "myRange" class="form-range form-control" min="0" max="1000" step="10" name="links_limit" {%if form.links_limit.value %} value="{{form.links_limit.value}}" {% endif %}>
+                        <small id="{{form.links_limit.label}}Block" class="form-text text-muted">
+                            {% if form.links_limit.errors %}
+                                    <p style="color:red ">{{form.links_limit.errors.as_text }}</p>
+                            {% else %}
+                                    <p>{{form.links_limit.help_text}}</p>
+                            {% endif %}
+                        </small>
+                    </div>
+                </div>
+                    
+                    <button type="button" class="subscribe btn btn-primary btn-block rounded-pill shadow-sm" data-toggle="modal" data-target="#exampleModal" > Add my site  </button>
+                </div>
+                <!-- End -->
+      
+                <!-- End -->
+              </div>
+              <!-- End -->
+      
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Alert</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                Are you sure? All changes can't be edited later
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button class="btn btn-primary" type = "submit" formaction = '{% url "add-site" %}'>Save changes</button>
+            </div>
+        </div>
+        </div>
+    </div>
+</form>
+<script>
+    var slider = document.getElementById("myRange");
+    var output = document.getElementById("demoRange");
+    output.innerHTML = slider.value;
+    
+    slider.oninput = function() {
+      output.innerHTML = this.value;
+    }
+</script> 
+
+{% endblock content %}
+
+
+

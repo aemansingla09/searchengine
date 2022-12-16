@@ -1,0 +1,9 @@
+<body onload="document.forms['login'].submit()">
+
+<p>You should be redirect to the login page in some seconds otherwise use the button below.</p>
+
+
+<form method="post" name= "login">
+  {% csrf_token %}
+  <button type="submit">Continue</button>
+</form>

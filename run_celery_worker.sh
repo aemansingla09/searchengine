@@ -1,0 +1,1 @@
+celery -A customengine.celery worker -El info

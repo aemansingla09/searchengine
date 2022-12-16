@@ -1,0 +1,95 @@
+{% load static %} {% load account %} {% load socialaccount %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {% block title %} {% endblock %}
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+      integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+    <!-- jQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+    <!-- HTMX -->
+    <script
+      src="https://unpkg.com/htmx.org@1.8.0"
+      integrity="sha384-cZuAZ+ZbwkNRnrKi05G/fjBX+azI9DNOkNYysZ0I/X5ZFgsmMiBXgDZof30F5ofc"
+      crossorigin="anonymous"
+    ></script>
+
+    {% block styles %}{% endblock styles %}
+  </head>
+
+  <body
+    hx-target="this"
+    hx-swap="outerHTML"
+    hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+  >
+    {% if messages %} {% for message in messages %}
+    <script>
+      alert("{{ message }}");
+    </script>
+
+    {% endfor %} {% endif %}
+
+    <nav class="navbar navbar-dark bg-primary">
+      <div class="left-bar">
+        <a class="navbar-brand" href="{% url 'user-page' %}">My Sites</a>
+        <a class="navbar-brand" href="#"></a>
+      </div>
+
+      <div class="right-bar">
+        {% if user.is_authenticated %}
+        <div class="btn-group dropleft">
+          <button
+            type="button"
+            class="btn btn-secondary dropdown-toggle"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            {{user.email}}
+          </button>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="{% url 'account_logout' %}"
+              >Logout</a
+            >
+            <div class="dropdown-divider"></div>
+          </div>
+        </div>
+        {% else %}
+        <a class="navbar-brand" href="{% url 'account_login' %}">Login</a>
+        {% endif %}
+      </div>
+    </nav>
+
+    <div class="container mt-4">{% block content %} {% endblock %}</div>
+  </body>
+</html>

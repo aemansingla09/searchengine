@@ -1,0 +1,2 @@
+celery -A customengine.celery worker --uid=65534 -B & gunicorn --bind=0.0.0.0 --timeout 600 customengine.wsgi
+# gunicorn —-bind=0.0.0.0 — timeout 600 customengine.wsgi & celery -A customengine.celery worker -l INFO -B
